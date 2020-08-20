@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import Constants from 'expo-constants';
 import { StyleSheet, View } from 'react-native';
@@ -26,6 +26,10 @@ const TabsComponent = () => (
         <Tabs.Screen
             name='Decks'
             component={DecksList}
+            options={{
+                tabBarIcon: ({ color }) => <Ionicons size={30} style={{ marginBottom: -3 }} name="ios-code"
+                                                     color={color} />
+            }}
         />
         <Tabs.Screen
             name='Add Deck'

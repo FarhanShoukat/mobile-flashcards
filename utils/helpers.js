@@ -56,7 +56,6 @@ export const setLocalNotification = () =>
                             tomorrow.setHours(20)
                             tomorrow.setMinutes(0)
                             tomorrow.setSeconds(0)
-                            console.warn(tomorrow)
 
                             Notifications.scheduleLocalNotificationAsync(
                                 createNotification(),

@@ -5,13 +5,19 @@ A React Native app that allows users to study collections of flashcards. The app
 
 This aap is good example for those who are starting React and React Native. It covers a lot of topics like react components, controlled components, redux, actions, reducers, local notifications, async storage etc.
 
-## TL;DR
+This app is part of the projects from [React Nanodegree Program](https://www.udacity.com/course/react-nanodegree--nd019).
 
-To get started developing right away:
+## How to run
+
+To get started:
 
 * install all project dependencies with `npm install` or `yarn install`
 * start the development server with `npm start`, `yarn start` or `expo start`
 
-## Directory Structure
+## Contact
+You can get in touch with me on my LinkedIn Profile: [Farhan Shoukat](https://www.linkedin.com/in/farhan-shoukat/)
 
-The project is structured in a standard way a react/redux app is structured i.e. actions, reducers, components are separated in their respective directories
+
+## License
+[MIT](../master/LICENSE)
+Copyright (c) 2020 Farhan Shoukat

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Alert, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { saveDeckTitle } from "../utils/helpers";
 import { addDeck } from "../actions";
@@ -45,6 +46,12 @@ const AddDeck = ({ decksTitle, dispatch, navigation }) => {
       </Button>
     </View>
   );
+};
+
+AddDeck.propTypes = {
+  decksTitle: PropTypes.array.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (decks) => ({

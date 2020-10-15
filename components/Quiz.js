@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { black, green, red, white } from "../utils/colors";
 import Button from "./Button";
@@ -91,6 +92,11 @@ const Quiz = ({ deck, navigation }) => {
       </Button>
     </View>
   );
+};
+
+Quiz.propTypes = {
+  deck: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (decks, { route }) => ({

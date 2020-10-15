@@ -1,6 +1,7 @@
 import React from "react";
 import { Alert, View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { black, white } from "../utils/colors";
 import Button from "./Button";
@@ -43,6 +44,11 @@ const DeckDetail = ({ deck, navigation }) => {
       </Button>
     </View>
   );
+};
+
+DeckDetail.propTypes = {
+  deck: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state, { route }) => ({

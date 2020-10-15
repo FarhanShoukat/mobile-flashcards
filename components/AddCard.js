@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Alert, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import TextField from "./TextField";
 import Button from "./Button";
@@ -52,6 +53,12 @@ const AddDeck = ({ deck, dispatch, navigation }) => {
       </Button>
     </View>
   );
+};
+
+AddDeck.propTypes = {
+  deck: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (decks, { route }) => ({

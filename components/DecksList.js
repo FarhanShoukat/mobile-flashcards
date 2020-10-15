@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { getDecks } from "../utils/helpers";
 import { receiveDecks } from "../actions";
@@ -42,6 +43,12 @@ const DecksList = ({ decks, dispatch, navigation }) => {
       />
     </View>
   );
+};
+
+DecksList.propTypes = {
+  decks: PropTypes.array.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (decks) => ({

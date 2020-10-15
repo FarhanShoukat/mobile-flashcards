@@ -1,9 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 
-import { black } from "../utils/colors";
-
-export default ({
+const Button = ({
   children,
   onPress,
   disabled = false,
@@ -18,6 +17,16 @@ export default ({
     <Text style={[styles.text, textStyle]}>{children}</Text>
   </TouchableOpacity>
 );
+
+Button.propTypes = {
+  children: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  btnStyle: PropTypes.object,
+  textStyle: PropTypes.object,
+};
+
+export default Button;
 
 const styles = StyleSheet.create({
   button: {

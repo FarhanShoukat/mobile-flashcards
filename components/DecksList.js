@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -12,16 +12,13 @@ import { getDecks } from "../utils/helpers";
 import { receiveDecks } from "../actions";
 import { white } from "../utils/colors";
 
-class DecksList extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-
+const DecksList = ({ decks, dispatch, navigation }) => {
+  useEffect(() => {
     getDecks().then((decks) => dispatch(receiveDecks(decks)));
-  }
+  }, []);
 
-  renderItem = ({ item }) => {
+  const renderItem = ({ item }) => {
     const { title, questions } = item;
-    const { navigation } = this.props;
 
     return (
       <TouchableWithoutFeedback
@@ -35,19 +32,17 @@ class DecksList extends Component {
     );
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          style={{ flex: 1 }}
-          data={this.props.decks}
-          renderItem={this.renderItem}
-          keyExtractor={(deck) => deck.title}
-        />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        style={{ flex: 1 }}
+        data={decks}
+        renderItem={renderItem}
+        keyExtractor={(deck) => deck.title}
+      />
+    </View>
+  );
+};
 
 const mapStateToProps = (decks) => ({
   decks: Object.values(decks),

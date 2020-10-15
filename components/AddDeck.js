@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { View, Text, Alert, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
@@ -8,15 +8,10 @@ import { black, white } from "../utils/colors";
 import Button from "./Button";
 import TextField from "./TextField";
 
-class AddDeck extends Component {
-  state = {
-    title: "",
-  };
+const AddDeck = ({ decksTitle, dispatch, navigation }) => {
+  const [title, setTitle] = useState("");
 
-  addDeck = () => {
-    const { title } = this.state;
-    const { decksTitle, dispatch, navigation } = this.props;
-
+  const add = () => {
     if (decksTitle.includes(title)) {
       Alert.alert(
         "Deck already exists",
@@ -32,29 +27,25 @@ class AddDeck extends Component {
     });
   };
 
-  render() {
-    const { title } = this.state;
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>What is the title of your new deck?</Text>
-        <TextField
-          onChangeText={(title) => this.setState({ title })}
-          placeholder="Deck Title"
-          value={title}
-        />
-        <Button
-          onPress={this.addDeck}
-          disabled={title === ""}
-          btnStyle={{ backgroundColor: black }}
-          textStyle={{ color: white }}
-        >
-          Submit
-        </Button>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>What is the title of your new deck?</Text>
+      <TextField
+        onChangeText={(title) => setTitle(title)}
+        placeholder="Deck Title"
+        value={title}
+      />
+      <Button
+        onPress={add}
+        disabled={title === ""}
+        btnStyle={{ backgroundColor: black }}
+        textStyle={{ color: white }}
+      >
+        Submit
+      </Button>
+    </View>
+  );
+};
 
 const mapStateToProps = (decks) => ({
   decksTitle: Object.keys(decks),

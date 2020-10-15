@@ -1,25 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
 import { Alert, View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
 import { black, white } from "../utils/colors";
 import Button from "./Button";
 
-class DeckDetail extends Component {
-  setTitle = (deck) => {
-    this.props.navigation.setOptions({
-      title: deck.title,
+const DeckDetail = ({ deck, navigation }) => {
+  const { title, questions } = deck;
+
+  navigation.setOptions({
+    title: deck.title,
+  });
+
+  const addCard = () =>
+    navigation.navigate("Add Card", {
+      deckTitle: deck.title,
     });
-  };
 
-  addCard = () =>
-    this.props.navigation.navigate("Add Card", {
-      deckTitle: this.props.deck.title,
-    });
-
-  startQuiz = () => {
-    const { deck, navigation } = this.props;
-
+  const startQuiz = () => {
     if (deck.questions.length)
       navigation.navigate("Quiz", { deckTitle: deck.title });
     else
@@ -29,29 +27,23 @@ class DeckDetail extends Component {
       );
   };
 
-  render() {
-    const { deck } = this.props;
-    const { title, questions } = deck;
-    this.setTitle(deck);
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.deckTitle}>{title}</Text>
-        <Text>{Object.keys(questions).length} cards</Text>
-        <Button btnStyle={styles.addCardBtn} onPress={this.addCard}>
-          Add Card
-        </Button>
-        <Button
-          btnStyle={styles.startQuizBtn}
-          textStyle={styles.startQuizBtnText}
-          onPress={this.startQuiz}
-        >
-          Start Quiz
-        </Button>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.deckTitle}>{title}</Text>
+      <Text>{Object.keys(questions).length} cards</Text>
+      <Button btnStyle={styles.addCardBtn} onPress={addCard}>
+        Add Card
+      </Button>
+      <Button
+        btnStyle={styles.startQuizBtn}
+        textStyle={styles.startQuizBtnText}
+        onPress={startQuiz}
+      >
+        Start Quiz
+      </Button>
+    </View>
+  );
+};
 
 const mapStateToProps = (state, { route }) => ({
   deck: state[route.params.deckTitle],

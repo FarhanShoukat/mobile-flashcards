@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
 
@@ -6,111 +6,92 @@ import { black, green, red, white } from "../utils/colors";
 import Button from "./Button";
 import { clearLocalNotification, setLocalNotification } from "../utils/helpers";
 
-class Quiz extends Component {
-  state = {
-    isQuestionShown: true,
-    currQuestionIndex: 0,
-    correctlyAnswered: 0,
-  };
+const Quiz = ({ deck, navigation }) => {
+  const [isQuestionShown, setIsQuestionShown] = useState(true);
+  const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
+  const [correctlyAnswered, setCorrectlyAnswered] = useState(0);
 
-  toggleQuestionShow = () =>
-    this.setState((state) => ({
-      isQuestionShown: !state.isQuestionShown,
-    }));
+  const setTitle = () => {
+    const totalQuestions = deck.questions.length;
+    const currQuestionNo = currQuestionIndex + 1;
 
-  setTitle = () => {
-    const totalQuestions = this.props.deck.questions.length;
-    const currQuestionNo = this.state.currQuestionIndex + 1;
-
-    this.props.navigation.setOptions({
+    navigation.setOptions({
       title:
         totalQuestions + 1 !== currQuestionNo
           ? `Quiz: ${currQuestionNo}/${totalQuestions}`
-          : this.props.deck.title,
+          : deck.title,
     });
   };
 
-  onSubmit = (isCorrect) => {
-    if (this.state.currQuestionIndex + 1 === this.props.deck.questions.length)
+  const onSubmit = (isCorrect) => {
+    if (currQuestionIndex + 1 === deck.questions.length)
       clearLocalNotification().then(setLocalNotification);
 
-    if (isCorrect)
-      this.setState((state) => ({
-        correctlyAnswered: state.correctlyAnswered + 1,
-      }));
+    if (isCorrect) setCorrectlyAnswered(correctlyAnswered + 1);
 
-    this.setState((state) => ({
-      currQuestionIndex: state.currQuestionIndex + 1,
-    }));
+    setCurrQuestionIndex(currQuestionIndex + 1);
   };
 
-  restartQuiz = () =>
-    this.setState({
-      isQuestionShown: true,
-      currQuestionIndex: 0,
-      correctlyAnswered: 0,
-    });
+  const restartQuiz = () => {
+    setIsQuestionShown(true);
+    setCurrQuestionIndex(0);
+    setCorrectlyAnswered(0);
+  };
 
-  backToDeck = () => this.props.navigation.goBack();
+  setTitle();
 
-  render() {
-    this.setTitle();
+  const { questions } = deck;
 
-    const {
-      isQuestionShown,
-      currQuestionIndex,
-      correctlyAnswered,
-    } = this.state;
-    const { questions } = this.props.deck;
-
-    if (questions.length === currQuestionIndex) {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.score}>
-            Score: {correctlyAnswered}/{currQuestionIndex}
-          </Text>
-          <Button onPress={this.restartQuiz} btnStyle={styles.restartBtn}>
-            Restart Quiz
-          </Button>
-          <Button
-            onPress={this.backToDeck}
-            btnStyle={styles.backToDeckBtn}
-            textStyle={styles.backToDeckBtnText}
-          >
-            Back to Deck
-          </Button>
-        </View>
-      );
-    }
-
-    const currQuestion = questions[currQuestionIndex];
-
+  if (questions.length === currQuestionIndex) {
     return (
       <View style={styles.container}>
-        <Text style={styles.questionAnswer}>
-          {isQuestionShown ? currQuestion.question : currQuestion.answer}
+        <Text style={styles.score}>
+          Score: {correctlyAnswered}/{currQuestionIndex}
         </Text>
-        <Text onPress={this.toggleQuestionShow} style={styles.switch}>
-          {isQuestionShown ? "Show Answer" : "Show Question"}
-        </Text>
-        <Button
-          onPress={() => this.onSubmit(true)}
-          btnStyle={styles.correctBtn}
-          textStyle={styles.correctBtnText}
-        >
-          Correct
+        <Button onPress={restartQuiz} btnStyle={styles.restartBtn}>
+          Restart Quiz
         </Button>
         <Button
-          onPress={() => this.onSubmit(false)}
-          btnStyle={styles.incorrectBtn}
-          textStyle={styles.incorrectBtnText}
+          onPress={() => navigation.goBack()}
+          btnStyle={styles.backToDeckBtn}
+          textStyle={styles.backToDeckBtnText}
         >
-          Incorrect
+          Back to Deck
         </Button>
       </View>
     );
   }
-}
+
+  const currQuestion = questions[currQuestionIndex];
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.questionAnswer}>
+        {isQuestionShown ? currQuestion.question : currQuestion.answer}
+      </Text>
+      <Text
+        onPress={() => setIsQuestionShown(!isQuestionShown)}
+        style={styles.switch}
+      >
+        {isQuestionShown ? "Show Answer" : "Show Question"}
+      </Text>
+      <Button
+        onPress={() => onSubmit(true)}
+        btnStyle={styles.correctBtn}
+        textStyle={styles.correctBtnText}
+      >
+        Correct
+      </Button>
+      <Button
+        onPress={() => onSubmit(false)}
+        btnStyle={styles.incorrectBtn}
+        textStyle={styles.incorrectBtnText}
+      >
+        Incorrect
+      </Button>
+    </View>
+  );
+};
 
 const mapStateToProps = (decks, { route }) => ({
   deck: decks[route.params.deckTitle],

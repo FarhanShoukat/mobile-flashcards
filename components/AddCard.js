@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { View, Alert, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
@@ -8,16 +8,11 @@ import { black, white } from "../utils/colors";
 import { addCard } from "../actions";
 import { addCardToDeck } from "../utils/helpers";
 
-class AddDeck extends Component {
-  state = {
-    question: "",
-    answer: "",
-  };
+const AddDeck = ({ deck, dispatch, navigation }) => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
-  addCard = () => {
-    const { question, answer } = this.state;
-    const { deck, dispatch, navigation } = this.props;
-
+  const addDeckCard = () => {
     if (deck.questions.find((card) => card.question === question)) {
       Alert.alert(
         "Question already exists",
@@ -35,33 +30,29 @@ class AddDeck extends Component {
     });
   };
 
-  render() {
-    const { question, answer } = this.state;
-
-    return (
-      <View style={styles.container}>
-        <TextField
-          onChangeText={(question) => this.setState({ question })}
-          placeholder="Question"
-          value={question}
-        />
-        <TextField
-          onChangeText={(answer) => this.setState({ answer })}
-          placeholder="Answer"
-          value={answer}
-        />
-        <Button
-          onPress={this.addCard}
-          disabled={!question || !answer}
-          btnStyle={{ backgroundColor: black }}
-          textStyle={{ color: white }}
-        >
-          Submit
-        </Button>
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <TextField
+        onChangeText={(question) => setQuestion(question)}
+        placeholder="Question"
+        value={question}
+      />
+      <TextField
+        onChangeText={(answer) => setAnswer(answer)}
+        placeholder="Answer"
+        value={answer}
+      />
+      <Button
+        onPress={addDeckCard}
+        disabled={!question || !answer}
+        btnStyle={{ backgroundColor: black }}
+        textStyle={{ color: white }}
+      >
+        Submit
+      </Button>
+    </View>
+  );
+};
 
 const mapStateToProps = (decks, { route }) => ({
   deck: decks[route.params.deckTitle],
